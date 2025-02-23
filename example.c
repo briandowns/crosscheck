@@ -5,6 +5,12 @@
 
 #include "crosscheck.h"
 
+void
+cc_setup(){}
+
+void
+cc_tear_down(){}
+
 int64_t
 add(int64_t x, int64_t y)
 {

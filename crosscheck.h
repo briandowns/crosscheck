@@ -22,10 +22,8 @@ typedef struct {
 } cc_result_t;
 
 #define CC_SUCCESS return (cc_result_t) { \
-    .filename = __FILE__, \
     .function = (char*)__FUNCTION__, \
     .result = true, \
-    .line = 0 \
 };
 
 #define CC_ASSERT_EQUAL(actual, expected) \
@@ -41,7 +39,7 @@ typedef struct {
     } while (0)
 #define CC_ASSERT_NOT_EQUAL(actual, expected) \
     do { \
-        if (actual != expected) { \
+        if (actual == expected) { \
             return (cc_result_t) { \
                 .filename = __FILE__, \
                 .function = (char*)__FUNCTION__, \
@@ -62,6 +60,12 @@ typedef struct {
  * cc_run function for execution.
  */
 typedef cc_result_t (*cc_func_t)();
+
+void
+cc_setup();
+
+void
+cc_tear_down();
 
 /**
  * Initializes the library and needed memory.

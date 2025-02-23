@@ -13,18 +13,17 @@ LIBDIR  = /usr/local/lib
 
 ifeq ($(UNAME_S),Darwin)
 $(NAME).dylib: clean
-	$(CC) -dynamiclib -o $@ github.c $(CFLAGS) $(LDFLAGS)
+	$(CC) -dynamiclib -o $@ crosscheck.c $(CFLAGS) $(LDFLAGS)
 endif
 ifeq ($(UNAME_S),Linux)
 $(NAME).so: clean
-	$(CC) -shared -o $@ github.c $(CFLAGS) $(LDFLAGS)
+	$(CC) -shared -o $@ crosscheck.c $(CFLAGS) $(LDFLAGS)
 endif
 
 .PHONY: tests
-tests: clean
-	$(CC) -o tests/tests tests/unity.c tests/github_test.c github.c $(CFLAGS) $(LDFLAGS)
-	tests/tests
-	rm -f tests/tests
+tests: example
+	./example
+	make clean
 
 .PHONY: valgrind
 valgrind: tests
@@ -32,18 +31,18 @@ valgrind: tests
 
 .PHONY: install
 install: 
-	cp github.h $(INCDIR)
-ifeq ($(UNAME_S),Linux)
-	cp github.h $(INCDIR)
+	cp crosscheck.h $(INCDIR)
+ifeq ($(UNAME_S),Linux)	
+	cp crosscheck.h $(INCDIR)
 	cp $(NAME).so $(LIBDIR)
 endif
 ifeq ($(UNAME_S),Darwin)
-	cp github.h $(INCDIR)
+	cp crosscheck.h $(INCDIR)
 	cp $(NAME).dylib $(LIBDIR)
 endif
 
 uninstall:
-	rm -f $(INCDIR)/github.h
+	rm -f $(INCDIR)/crosscheck.h
 ifeq ($(UNAME_S),Linux)
 	rm -f $(INCDIR)/$(NAME).so
 endif
@@ -57,7 +56,8 @@ clean:
 	rm -f $(NAME).so
 	rm -f example
 	rm -f tests/tests
+	rm -f test
 
 .PHONY: example
 example: clean
-	$(CC) -o $@ github.c example.c $(CFLAGS) $(LDFLAGS)
+	$(CC) -o $@ crosscheck.c example.c $(CFLAGS) $(LDFLAGS)
