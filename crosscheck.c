@@ -1,9 +1,9 @@
+#include <inttypes.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <time.h>
 
-#include <inttypes.h>
 #include "crosscheck.h"
 
 #define GREEN "\x1B[32m"
@@ -25,7 +25,7 @@ cc_init()
 }
 
 bool
-cc_run(const char *name, cc_func_t func)
+cc_run(cc_func_t func)
 {
     count++;
 
@@ -37,13 +37,13 @@ cc_run(const char *name, cc_func_t func)
     if (ret.result == false) {
         failed++;
         printf("    %-28s%-2s:%-21ld" RED "%-8s" RESET "   %-2.3f/ms\n",
-            name, ret.filename, ret.line, "failed", (time_spent*1000));
+            ret.function, ret.filename, ret.line, "failed", (time_spent*1000));
         return false;
     }
     passed++;
 
     printf("    %-28s%-28s" GREEN "%-8s" RESET "   %-2.3f/ms\n",
-         name, "", "   passed", (time_spent*1000));
+        ret.function, "", "   passed", (time_spent*1000));
 
     return true;
 }

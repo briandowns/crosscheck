@@ -30,8 +30,8 @@ main(void)
 {
     cc_init();
  
-    cc_run("add", test_add_fail);
-    cc_run("add", test_add_success);
+    cc_run(test_add_fail);
+    cc_run(test_add_success);
 
     cc_complete();
 
