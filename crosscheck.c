@@ -65,7 +65,7 @@ cc_run(cc_func_t func)
     double time_spent = (double)(test_end - test_start) / CLOCKS_PER_SEC;
     if (ret.result == false) {
         failed++;
-        printf("  %-28s%18s:%-12ld" RED "%-8s" RESET " %-2.3f/ms\n",
+        printf("  %-28s%18s:%-12"PRIu64 RED "%-8s" RESET " %-2.3f/ms\n",
             ret.function, ret.filename, ret.line, "failed", (time_spent*1000));
         printf("        expected: x, got: y\n");
         cc_tear_down();
