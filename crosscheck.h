@@ -147,17 +147,23 @@ cc_tear_down();
 void
 cc_init();
 
+#define CC_INIT cc_init();
+
 /**
  * cc_complete cleans up used resources and prints results.
  */
-void
+uint64_t
 cc_complete();
+
+#define CC_COMPLETE return cc_complete();
 
 /**
  * Run the given test.
  */
 bool
 cc_run(cc_func_t func);
+
+#define CC_RUN(func) cc_run(func);
 
 #endif /* end __CC_H */
 #ifdef __cplusplus

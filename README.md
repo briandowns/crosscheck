@@ -6,22 +6,22 @@ Crosscheck is a very simple unit testing library for C code.
 
 ## Usage
 
-Initialize the library
+Initialize the library with the below macro.
 
 ```c
-cc_init();
+CC_INIT;
 ```
 
-Running tests
+Running tests.
 
 ```c
-cc_run(test_func);
+CC_RUN(test_func);
 ```
 
-Complete testing and print out results
+Complete testing and print out results, and set return code.
 
 ```c
-cc_complete();
+CC_COMPLETE;
 ```
 
 ## Test Functions

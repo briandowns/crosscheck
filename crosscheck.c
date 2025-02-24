@@ -81,11 +81,13 @@ cc_run(cc_func_t func)
     return true;
 }
 
-void
+uint64_t
 cc_complete()
 {
     end = clock();
     double ts = (double)(end - start) / CLOCKS_PER_SEC; \
     printf("\nTotal: %-4"PRIu64 " Passed: %-4"PRIu64 " Failed: %-4"PRIu64 "in  %-2.3f/ms\n", \
          count, passed, failed, (ts*1000));
+
+    return failed;
 }
