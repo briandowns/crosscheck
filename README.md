@@ -26,7 +26,7 @@ cc_complete();
 
 ## Test Functions
 
-Test functions have 1 requirement. They need to return a `cc_result_t` type. This is done automatically for you using any of the provided "asserts" and a simple macro is provided (`CC_SUCCESS`)to be put at the end of the function. Check out the example.c file for a full exmaples.
+Test functions have 1 requirement. They need to return a `cc_result_t` type. This is done automatically for you using any of the provided "asserts" and a simple macro is provided (`CC_SUCCESS`)to be put at the end of the function. Check out the example.c file for a full examples.
 
 Though not a requirement, all test function names should be prepended with "test_".
 
