@@ -81,15 +81,14 @@ int
 main(void)
 {
     srand(time(NULL));
-    cc_init();
+
+    CC_INIT;
  
-    cc_run(test_add_fail);
-    cc_run(test_add_success);
-    cc_run(test_sub_success);
-    cc_run(test_string_compare_success);
-    cc_run(test_string_compare_failure);
+    CC_RUN(test_add_fail);
+    CC_RUN(test_add_success);
+    CC_RUN(test_sub_success);
+    CC_RUN(test_string_compare_success);
+    CC_RUN(test_string_compare_failure);
 
-    cc_complete();
-
-    return 0;
+    CC_COMPLETE;
 }
