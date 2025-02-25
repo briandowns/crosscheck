@@ -42,13 +42,13 @@ sub(int64_t x, int64_t y)
 
 /* tests */
 
-// cc_result_t
-// test_add_fail()
-// {
-//     int actual = add(2, 5);
-//     CC_ASSERT_NOT_EQUAL(actual, 5);
-//     CC_SUCCESS;
-// }
+cc_result_t
+test_add_fail()
+{
+    int actual = add(2, 5);
+    CC_ASSERT_INT_NOT_EQUAL(actual, 5);
+    CC_SUCCESS;
+}
 
 cc_result_t
 test_add_success()
@@ -87,9 +87,9 @@ main(void)
 
     CC_INIT;
  
-    // CC_RUN(test_add_fail);
+    CC_RUN(test_add_fail);
     CC_RUN(test_add_success);
-    // CC_RUN(test_sub_success);
+    CC_RUN(test_sub_success);
     // CC_RUN(test_string_compare_success);
     // CC_RUN(test_string_compare_failure);
 
