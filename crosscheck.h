@@ -41,8 +41,13 @@ extern "C" {
 #include <time.h>
 #include <unistd.h>
 
-typedef enum test_value_type {
+typedef enum {
+    test_type_char,
     test_type_string,
+    test_type_float,
+    test_type_double,
+    test_type_long,
+    test_type_long_long,
     test_type_int,
     test_type_int8,
     test_type_int16,
@@ -55,6 +60,25 @@ typedef enum test_value_type {
     test_type_uint64,
 } test_value_type_t;
 
+typedef union {
+    int int_val;
+    unsigned int uint_val;
+    float float_val;
+    double double_val;
+    long long_val;
+    long long long_long_val;
+    int8_t int8_val;
+    int16_t int16_val;
+    int32_t int32_val;
+    int64_t int64_val;
+    uint8_t uint8_val;
+    uint16_t uint16_val;
+    uint32_t uint32_val;
+    uint64_t uint64_val;
+    char char_val;
+    char *string_val;
+} test_values_t;
+
 /**
  * cc_result_t holds the state of a test run, most importantly whether
  * the test has failed or succeeded.
@@ -62,9 +86,9 @@ typedef enum test_value_type {
 typedef struct {
     char *filename;
     char *function;
-    test_value_type_t t;
-    void *expected;
-    void *actual;
+    test_value_type_t type;
+    test_values_t exp;
+    test_values_t act;
     bool result;
     uint64_t line;
 } cc_result_t;
@@ -84,53 +108,215 @@ typedef cc_result_t (*cc_func_t)();
     .result = true,                       \
 };
 
-/**
- * CC_ASSERT_EQUAL takes 2 comparable values and reports on their equality. 
- */
-#define CC_ASSERT_EQUAL(actual, expected)        \
-    do {                                         \
-        if (actual != expected) {                \
-            return (cc_result_t) {               \
-                .filename = __FILE__,            \
-                .function = (char*)__FUNCTION__, \
-                .result = false,                 \
-                .line = __LINE__                 \
-            };                                   \
-        }                                        \
-    } while (0)
-
-/**
- * CC_ASSERT_EQUAL takes 2 comparable values and reports on their equality. 
- */
-#define CC_ASSERT_EQUAL_TYPE(actual, expected, type) \
-do {                                         \
-    if (actual != expected) {                \
-        return (cc_result_t) {               \
-            .filename = __FILE__,            \
-            .function = (char*)__FUNCTION__, \
-            .result = false,                 \
-            .line = __LINE__                 \
-        };                                   \
-    }                                        \
-} while (0)
-
-/**
- * CC_ASSERT_NOT_EQUAL takes 2 comparable values and reports on
- * their inequality.
- */
-#define CC_ASSERT_NOT_EQUAL(actual, expected) \
+#define CC_ASSERT_NUMBER_EQUAL_TYPE(actual, expected, test_type) \
     do { \
-        if (actual == expected) { \
-            return (cc_result_t) { \
+        if ((actual) != (expected)) { \
+            cc_result_t res = (cc_result_t) { \
                 .filename = __FILE__, \
                 .function = (char*)__FUNCTION__, \
+                .type = (test_type), \
                 .result = false, \
                 .line = __LINE__ \
             }; \
+            switch ((test_type)) { \
+                case test_type_char: \
+                    res.exp = (test_values_t) {.char_val = (expected)}; \
+                    res.act = (test_values_t) {.char_val = (actual)}; \
+                    break; \
+                case test_type_float: \
+                    res.exp = (test_values_t) {.float_val = (expected)}; \
+                    res.act = (test_values_t) {.float_val = (actual)}; \
+                    break; \
+                case test_type_double: \
+                    res.exp = (test_values_t) {.double_val = (expected)}; \
+                    res.act = (test_values_t) {.double_val = (actual)}; \
+                    break; \
+                case test_type_long: \
+                    res.exp = (test_values_t) {.long_val = (expected)}; \
+                    res.act = (test_values_t) {.long_val = (actual)}; \
+                    break; \
+                case test_type_long_long: \
+                    res.exp = (test_values_t) {.long_long_val = (expected)}; \
+                    res.act = (test_values_t) {.long_long_val = (actual)}; \
+                    break; \
+                case test_type_int: \
+                    res.exp = (test_values_t) {.int_val = (expected)}; \
+                    res.act = (test_values_t) {.int_val = (actual)}; \
+                    break; \
+                case test_type_int8: \
+                    res.exp = (test_values_t) {.int8_val = (expected)}; \
+                    res.act = (test_values_t) {.int8_val = (actual)}; \
+                    break; \
+                case test_type_int16: \
+                    res.exp = (test_values_t) {.int16_val = (expected)}; \
+                    res.act = (test_values_t) {.int16_val = (actual)}; \
+                    break; \
+                case test_type_int32: \
+                    res.exp = (test_values_t) {.int32_val = (expected)}; \
+                    res.act = (test_values_t) {.int32_val = (actual)}; \
+                    break; \
+                case test_type_int64: \
+                    res.exp = (test_values_t) {.int64_val = (expected)}; \
+                    res.act = (test_values_t) {.int64_val = (actual)}; \
+                    break; \
+                case test_type_uint: \
+                    res.exp = (test_values_t) {.uint_val = (expected)}; \
+                    res.act = (test_values_t) {.uint_val = (actual)}; \
+                    break; \
+                case test_type_uint8: \
+                    res.exp = (test_values_t) {.uint8_val = (expected)}; \
+                    res.act = (test_values_t) {.uint8_val = (actual)}; \
+                    break; \
+                case test_type_uint16: \
+                    res.exp = (test_values_t) {.uint16_val = (expected)}; \
+                    res.act = (test_values_t) {.uint16_val = (actual)}; \
+                    break; \
+                case test_type_uint32: \
+                    res.exp = (test_values_t) {.uint32_val = (expected)}; \
+                    res.act = (test_values_t) {.uint32_val = (actual)}; \
+                    break; \
+                case test_type_uint64: \
+                    res.exp = (test_values_t) {.uint64_val = (expected)}; \
+                    res.act = (test_values_t) {.uint64_val = (actual)}; \
+                    break; \
+            } \
+            return res; \
         } \
     } while (0)
 
-#define CC_ASSERT_INT_EQUAL(actual, expected) CC_ASSERT_EQUAL(actual, expected)
+#define CC_ASSERT_NUMBER_NOT_EQUAL_TYPE(actual, expected, test_type)         \
+    do {                                                                     \
+        if ((actual) == (expected)) {                                        \
+            cc_result_t res = (cc_result_t) {                                \
+                .filename = __FILE__,                                        \
+                .function = (char*)__FUNCTION__,                             \
+                .type = (test_type),                                         \
+                .result = false,                                             \
+                .line = __LINE__                                             \
+            };                                                               \
+            if ((test_type) == test_type_char) {                              \
+                    res.exp = (test_values_t) {.char_val = (expected)};      \
+                    res.act = (test_values_t) {.char_val = (actual)};        \
+            } else if ((test_type) == test_type_float) { \
+                res.exp = (test_values_t) {.float_val = (expected)};     \
+                res.act = (test_values_t) {.float_val = (actual)};       \
+            } else if ((test_type) == test_type_double) { \
+                    res.exp = (test_values_t) {.double_val = (expected)};    \
+                    res.act = (test_values_t) {.double_val = (actual)};      \
+                case test_type_long:                                         \
+                    res.exp = (test_values_t) {.long_val = (expected)};      \
+                    res.act = (test_values_t) {.long_val = (actual)};        \
+                    break;                                                   \
+                case test_type_long_long:                                    \
+                    res.exp = (test_values_t) {.long_long_val = (expected)}; \
+                    res.act = (test_values_t) {.long_long_val = (actual)};   \
+                    break;                                                   \
+                case test_type_int:                                          \
+                    res.exp = (test_values_t) {.int_val = (expected)};       \
+                    res.act = (test_values_t) {.int_val = (actual)};         \
+                    break;                                                   \
+                case test_type_int8:                                         \
+                    res.exp = (test_values_t) {.int8_val = (expected)};      \
+                    res.act = (test_values_t) {.int8_val = (actual)};        \
+                    break;                                                   \
+                case test_type_int16:                                        \
+                    res.exp = (test_values_t) {.int16_val = (expected)};     \
+                    res.act = (test_values_t) {.int16_val = (actual)};       \
+                    break;                                                   \
+                case test_type_int32:                                        \
+                    res.exp = (test_values_t) {.int32_val = (expected)};     \
+                    res.act = (test_values_t) {.int32_val = (actual)};       \
+                    break;                                                   \
+                case test_type_int64:                                        \
+                    res.exp = (test_values_t) {.int64_val = (expected)};     \
+                    res.act = (test_values_t) {.int64_val = (actual)};       \
+                    break;                                                   \
+                case test_type_uint:                                         \
+                    res.exp = (test_values_t) {.uint_val = (expected)};      \
+                    res.act = (test_values_t) {.uint_val = (actual)};        \
+                    break;                                                   \
+                case test_type_uint8:                                        \
+                    res.exp = (test_values_t) {.uint8_val = (expected)};     \
+                    res.act = (test_values_t) {.uint8_val = (actual)};       \
+                    break;                                                   \
+                case test_type_uint16:                                       \
+                    res.exp = (test_values_t) {.uint16_val = (expected)};    \
+                    res.act = (test_values_t) {.uint16_val = (actual)};      \
+                    break;                                                   \
+                case test_type_uint32:                                       \
+                    res.exp = (test_values_t) {.uint32_val = (expected)};    \
+                    res.act = (test_values_t) {.uint32_val = (actual)};      \
+                    break;                                                   \
+                case test_type_uint64:                                       \
+                    res.exp = (test_values_t) {.uint64_val = (expected)};    \
+                    res.act = (test_values_t) {.uint64_val = (actual)};      \
+                    break;                                                   \
+            }                                                                \
+            return res;                                                      \
+        }                                                                    \
+    } while (0)
+
+#define CC_ASSERT_CHAR_EQUAL(actual, expected)                            \
+    CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_char)
+#define CC_ASSERT_FLOAT_EQUAL(actual, expected)                           \
+    CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_float)
+#define CC_ASSERT_DOUBLE_EQUAL(actual, expected)                          \
+    CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_double)
+#define CC_ASSERT_LONG_EQUAL(actual, expected)                            \
+    CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_long)
+#define CC_ASSERT_LONG_LONG_EQUAL(actual, expected)                       \
+    CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_long_long)
+#define CC_ASSERT_INT_EQUAL(actual, expected)                             \
+    CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_int)
+#define CC_ASSERT_INT8_EQUAL(actual, expected)                            \
+    CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_int8)
+#define CC_ASSERT_INT16_EQUAL(actual, expected)                           \
+    CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_int16)
+#define CC_ASSERT_INT32_EQUAL(actual, expected)                           \
+    CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_int32)
+#define CC_ASSERT_INT64_EQUAL(actual, expected)                           \
+    CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_int64)
+#define CC_ASSERT_UINT_EQUAL(actual, expected)                            \
+    CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_uint)
+#define CC_ASSERT_UINT8_EQUAL(actual, expected)                           \
+    CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_uint8)
+#define CC_ASSERT_UINT16_EQUAL(actual, expected)                          \
+    CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_uint16)
+#define CC_ASSERT_UINT32_EQUAL(actual, expected)                          \
+    CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_uint32)
+#define CC_ASSERT_UINT64_EQUAL(actual, expected)                          \
+    CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_uint64)
+
+#define CC_ASSERT_CHAR_NOT_EQUAL(actual, expected)                            \
+    CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_char)
+#define CC_ASSERT_FLOAT_NOT_EQUAL(actual, expected)                           \
+    CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_float)
+#define CC_ASSERT_DOUBLE_NOT_EQUAL(actual, expected)                          \
+    CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_double)
+#define CC_ASSERT_LONG_NOT_EQUAL(actual, expected)                            \
+    CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_long)
+#define CC_ASSERT_LONG_LONG_NOT_EQUAL(actual, expected)                       \
+    CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_long_long)
+#define CC_ASSERT_INT_NOT_EQUAL(actual, expected)                             \
+    CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_int)
+#define CC_ASSERT_INT8_NOT_EQUAL(actual, expected)                            \
+    CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_int8)
+#define CC_ASSERT_INT16_NOT_EQUAL(actual, expected)                           \
+    CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_int16)
+#define CC_ASSERT_INT32_NOT_EQUAL(actual, expected)                           \
+    CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_int32)
+#define CC_ASSERT_INT64_NOT_EQUAL(actual, expected)                           \
+    CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_int64)
+#define CC_ASSERT_UINT_NOT_EQUAL(actual, expected)                            \
+    CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_uint)
+#define CC_ASSERT_UINT8_NOT_EQUAL(actual, expected)                           \
+    CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_uint8)
+#define CC_ASSERT_UINT16_NOT_EQUAL(actual, expected)                          \
+    CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_uint16)
+#define CC_ASSERT_UINT32_NOT_EQUAL(actual, expected)                          \
+    CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_uint32)
+#define CC_ASSERT_UINT64_NOT_EQUAL(actual, expected)                          \
+    CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_uint64)
 
 /**
  * CC_ASSERT_STRING_EQUAL takes 2 strings and reports on their inequality. 

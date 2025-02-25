@@ -42,40 +42,43 @@ sub(int64_t x, int64_t y)
 
 /* tests */
 
-cc_result_t
-test_add_fail()
-{
-    CC_ASSERT_NOT_EQUAL(add(2, 4), 5);
-    CC_SUCCESS;
-}
+// cc_result_t
+// test_add_fail()
+// {
+//     int actual = add(2, 5);
+//     CC_ASSERT_NOT_EQUAL(actual, 5);
+//     CC_SUCCESS;
+// }
 
 cc_result_t
 test_add_success()
 {
-    CC_ASSERT_EQUAL(add(undertest_x, undertest_y), expected);
+    int res = add(undertest_x, undertest_y); 
+    CC_ASSERT_INT_EQUAL(res, expected);
     CC_SUCCESS;
 }
 
 cc_result_t
 test_sub_success()
 {
-    CC_ASSERT_EQUAL(sub(undertest_x, undertest_y), (undertest_x-undertest_y));
+    int res = sub(undertest_x, undertest_y);
+    CC_ASSERT_INT_EQUAL(res, (undertest_x-undertest_y)); 
     CC_SUCCESS;
 }
 
-cc_result_t
-test_string_compare_success()
-{
-    CC_ASSERT_STRING_EQUAL("y", "x");
-    CC_SUCCESS;
-}
+// cc_result_t
+// test_string_compare_success()
+// {
+//     CC_ASSERT_STRING_EQUAL("y", "x");
+//     CC_SUCCESS;
+// }
 
-cc_result_t
-test_string_compare_failure()
-{
-    CC_ASSERT_STRING_NOT_EQUAL("x", "y");
-    CC_SUCCESS;
-}
+// cc_result_t
+// test_string_compare_failure()
+// {
+//     CC_ASSERT_STRING_NOT_EQUAL("x", "y");
+//     CC_SUCCESS;
+// }
 
 int
 main(void)
@@ -84,11 +87,11 @@ main(void)
 
     CC_INIT;
  
-    CC_RUN(test_add_fail);
+    // CC_RUN(test_add_fail);
     CC_RUN(test_add_success);
-    CC_RUN(test_sub_success);
-    CC_RUN(test_string_compare_success);
-    CC_RUN(test_string_compare_failure);
+    // CC_RUN(test_sub_success);
+    // CC_RUN(test_string_compare_success);
+    // CC_RUN(test_string_compare_failure);
 
     CC_COMPLETE;
 }

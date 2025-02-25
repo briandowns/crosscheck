@@ -68,7 +68,7 @@ cc_run(cc_func_t func)
         failed++;
         printf("  %-28s%18s:%-12"PRIu64 RED "%-8s" RESET " %-2.3f/ms\n",
             ret.function, ret.filename, ret.line, "failed", (time_spent*1000));
-        printf("        expected: x, got: y\n");
+            printf("        expected: %d, got: %d\n", ret.exp.int_val, ret.act.int_val);
         cc_tear_down();
 
         return false;
