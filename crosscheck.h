@@ -41,6 +41,9 @@ extern "C" {
 #include <time.h>
 #include <unistd.h>
 
+/**
+ * test_value_type_t contains all possible types that can be under test.
+ */
 typedef enum {
     test_type_char,
     test_type_string,
@@ -60,6 +63,9 @@ typedef enum {
     test_type_uint64,
 } test_value_type_t;
 
+/**
+ * test_values_t holds all possible values that can be under test.
+ */
 typedef union {
     int int_val;
     unsigned int uint_val;
@@ -108,6 +114,10 @@ typedef cc_result_t (*cc_func_t)();
     .result = true,                       \
 };
 
+/**
+ * __CC_VALUES_ASSIGN handles copying the values under test into the result
+ * struct for error output.
+ */
 #define __CC_VALUES_ASSIGN(actual, expected, test_type)            \
     if ((test_type) == test_type_char) {                           \
         ccrt.exp = (test_values_t) {.char_val = (char)(expected)}; \
@@ -156,6 +166,10 @@ typedef cc_result_t (*cc_func_t)();
         ccrt.act = (test_values_t) {.uint64_val = (actual)};       \
     }
 
+/**
+ * __CC_ASSERT_NUMBER_EQUAL_TYPE is the "unexported" check for number
+ * value equality.
+ */
 #define __CC_ASSERT_NUMBER_EQUAL_TYPE(actual, expected, test_type) \
     do {                                                           \
         if ((actual) != (expected)) {                              \
@@ -171,6 +185,10 @@ typedef cc_result_t (*cc_func_t)();
         }                                                          \
     } while (0)
 
+/**
+ * __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE is the "unexported" check for number
+ * value in-equality.
+ */
 #define __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE(actual, expected, test_type) \
     do {                                                               \
         if ((actual) == (expected)) {                                  \
@@ -186,6 +204,7 @@ typedef cc_result_t (*cc_func_t)();
         }                                                              \
     } while (0)
 
+/* Type specific wrapper macros for equality */
 #define CC_ASSERT_CHAR_EQUAL(actual, expected)                            \
     __CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_char)
 #define CC_ASSERT_FLOAT_EQUAL(actual, expected)                           \
@@ -217,6 +236,7 @@ typedef cc_result_t (*cc_func_t)();
 #define CC_ASSERT_UINT64_EQUAL(actual, expected)                          \
     __CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_uint64)
 
+/* Type specific wrapper macros for in-equality */
 #define CC_ASSERT_CHAR_NOT_EQUAL(actual, expected)                            \
     __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_char)
 #define CC_ASSERT_FLOAT_NOT_EQUAL(actual, expected)                           \
@@ -249,17 +269,33 @@ typedef cc_result_t (*cc_func_t)();
     __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_uint64)
 
 /**
+ * __CC_STRING_VAL_COPY copies the string values under test.
+ */
+#define __CC_STRING_VAL_COPY(actual, expected)                   \
+    ccrt.exp = (test_values_t) {                                 \
+        .string_val = calloc(strlen((expected))+1, sizeof(char)) \
+    };                                                           \
+    strcpy(ccrt.exp.string_val, (expected));                     \
+    ccrt.act = (test_values_t) {                                 \
+        .string_val = calloc(strlen((actual))+1, sizeof(char))   \
+    };                                                           \
+    strcpy(ccrt.act.string_val, (actual));
+
+/**
  * CC_ASSERT_STRING_EQUAL takes 2 strings and reports on their inequality. 
  */
-#define CC_ASSERT_STRING_EQUAL(actual, expected) \
-    do { \
-        if (strcmp(actual, expected) != 0) { \
-            return (cc_result_t) { \
-                .filename = __FILE__, \
-                .function = (char*)__FUNCTION__, \
-                .result = false, \
-                .line = __LINE__ \
-            }; \
+#define CC_ASSERT_STRING_EQUAL(actual, expected)    \
+    do {                                            \
+        if (strcmp(actual, expected) != 0) {        \
+            cc_result_t ccrt = (cc_result_t) {      \
+                .filename = __FILE__,               \
+                .function = (char*)__FUNCTION__,    \
+                .type = test_type_string,           \
+                .result = false,                    \
+                .line = __LINE__                    \
+            };                                      \
+            __CC_STRING_VAL_COPY(actual, expected); \
+            return ccrt;                            \
         } \
     } while (0)
 
@@ -267,16 +303,19 @@ typedef cc_result_t (*cc_func_t)();
  * CC_ASSERT_STRING_NOT_EQUAL takes 2 strings and reports on their inequality. 
  */
 #define CC_ASSERT_STRING_NOT_EQUAL(actual, expected) \
-    do { \
-        if (strcmp(actual, expected) == 0) { \
-            return (cc_result_t) { \
-                .filename = __FILE__, \
-                .function = (char*)__FUNCTION__, \
-                .result = false, \
-                .line = __LINE__ \
-            }; \
-        } \
-    } while (0)
+do {                                                 \
+    if (strcmp(actual, expected) == 0) {             \
+        cc_result_t ccrt = (cc_result_t) {           \
+            .filename = __FILE__,                    \
+            .function = (char*)__FUNCTION__,         \
+            .type = test_type_string,                \
+            .result = false,                         \
+            .line = __LINE__                         \
+        };                                           \
+        __CC_STRING_VAL_COPY(actual, expected);      \
+        return ccrt;                                 \
+    }                                                \
+} while (0)
 
 /**
  * cc_setup is a function that needs to be implemented by the consumer of the 
@@ -298,15 +337,11 @@ cc_tear_down();
 void
 cc_init();
 
-#define CC_INIT cc_init();
-
 /**
  * cc_complete cleans up used resources and prints results.
  */
 uint64_t
 cc_complete();
-
-#define CC_COMPLETE return cc_complete();
 
 /**
  * Run the given test.
@@ -314,7 +349,9 @@ cc_complete();
 bool
 cc_run(cc_func_t func);
 
+#define CC_INIT cc_init();
 #define CC_RUN(func) cc_run(func);
+#define CC_COMPLETE return cc_complete();
 
 #endif /* end __CC_H */
 #ifdef __cplusplus

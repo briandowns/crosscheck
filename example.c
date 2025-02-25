@@ -66,19 +66,19 @@ test_sub_success()
     CC_SUCCESS;
 }
 
-// cc_result_t
-// test_string_compare_success()
-// {
-//     CC_ASSERT_STRING_EQUAL("y", "x");
-//     CC_SUCCESS;
-// }
+cc_result_t
+test_string_compare_success()
+{
+    CC_ASSERT_STRING_EQUAL("x", "x");
+    CC_SUCCESS;
+}
 
-// cc_result_t
-// test_string_compare_failure()
-// {
-//     CC_ASSERT_STRING_NOT_EQUAL("x", "y");
-//     CC_SUCCESS;
-// }
+cc_result_t
+test_string_compare_failure()
+{
+    CC_ASSERT_STRING_NOT_EQUAL("x", "y");
+    CC_SUCCESS;
+}
 
 int
 main(void)
@@ -90,8 +90,8 @@ main(void)
     CC_RUN(test_add_fail);
     CC_RUN(test_add_success);
     CC_RUN(test_sub_success);
-    // CC_RUN(test_string_compare_success);
-    // CC_RUN(test_string_compare_failure);
+    CC_RUN(test_string_compare_success);
+    CC_RUN(test_string_compare_failure);
 
     CC_COMPLETE;
 }
