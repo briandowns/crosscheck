@@ -156,34 +156,34 @@ typedef cc_result_t (*cc_func_t)();
         ccrt.act = (test_values_t) {.uint64_val = (actual)};       \
     }
 
-#define __CC_ASSERT_NUMBER_EQUAL_TYPE(actual, expected, test_type)         \
-    do {                                                                   \
-        if ((actual) != (expected)) {                                      \
-            cc_result_t ccrt = (cc_result_t) {                             \
-                .filename = __FILE__,                                      \
-                .function = (char*)__FUNCTION__,                           \
-                .type = (test_type),                                       \
-                .result = false,                                           \
-                .line = __LINE__                                           \
-            };                                                             \
-            __CC_VALUES_ASSIGN(actual, expected, test_type);               \
-            return ccrt;                                                   \
-        }                                                                  \
+#define __CC_ASSERT_NUMBER_EQUAL_TYPE(actual, expected, test_type) \
+    do {                                                           \
+        if ((actual) != (expected)) {                              \
+            cc_result_t ccrt = (cc_result_t) {                     \
+                .filename = __FILE__,                              \
+                .function = (char*)__FUNCTION__,                   \
+                .type = (test_type),                               \
+                .result = false,                                   \
+                .line = __LINE__                                   \
+            };                                                     \
+            __CC_VALUES_ASSIGN(actual, expected, test_type);       \
+            return ccrt;                                           \
+        }                                                          \
     } while (0)
 
-#define __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE(actual, expected, test_type)     \
-    do {                                                                   \
-        if ((actual) == (expected)) {                                      \
-            cc_result_t ccrt = (cc_result_t) {                             \
-                .filename = __FILE__,                                      \
-                .function = (char*)__FUNCTION__,                           \
-                .type = (test_type),                                       \
-                .result = false,                                           \
-                .line = __LINE__                                           \
-            };                                                             \
-            __CC_VALUES_ASSIGN(actual, expected, test_type);               \
-            return ccrt;                                                   \
-        }                                                                  \
+#define __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE(actual, expected, test_type) \
+    do {                                                               \
+        if ((actual) == (expected)) {                                  \
+            cc_result_t ccrt = (cc_result_t) {                         \
+                .filename = __FILE__,                                  \
+                .function = (char*)__FUNCTION__,                       \
+                .type = (test_type),                                   \
+                .result = false,                                       \
+                .line = __LINE__                                       \
+            };                                                         \
+            __CC_VALUES_ASSIGN(actual, expected, test_type);           \
+            return ccrt;                                               \
+        }                                                              \
     } while (0)
 
 #define CC_ASSERT_CHAR_EQUAL(actual, expected)                            \
