@@ -83,6 +83,7 @@ typedef union {
     uint64_t uint64_val;
     char char_val;
     char *string_val;
+    bool bool_val;
 } test_values_t;
 
 /**
@@ -303,19 +304,38 @@ typedef cc_result_t (*cc_func_t)();
  * CC_ASSERT_STRING_NOT_EQUAL takes 2 strings and reports on their inequality. 
  */
 #define CC_ASSERT_STRING_NOT_EQUAL(actual, expected) \
-do {                                                 \
-    if (strcmp(actual, expected) == 0) {             \
-        cc_result_t ccrt = (cc_result_t) {           \
-            .filename = __FILE__,                    \
-            .function = (char*)__FUNCTION__,         \
-            .type = test_type_string,                \
-            .result = false,                         \
-            .line = __LINE__                         \
-        };                                           \
-        __CC_STRING_VAL_COPY(actual, expected);      \
-        return ccrt;                                 \
-    }                                                \
-} while (0)
+    do {                                                 \
+        if (strcmp(actual, expected) == 0) {             \
+            cc_result_t ccrt = (cc_result_t) {           \
+                .filename = __FILE__,                    \
+                .function = (char*)__FUNCTION__,         \
+                .type = test_type_string,                \
+                .result = false,                         \
+                .line = __LINE__                         \
+            };                                           \
+            __CC_STRING_VAL_COPY(actual, expected);      \
+            return ccrt;                                 \
+        }                                                \
+    } while (0)
+
+/**
+ * CC_ASSERT_TRUE. 
+ */
+#define CC_ASSERT_TRUE(actual) \
+    do {                                                 \
+        if (actual == false) {             \
+            cc_result_t ccrt = (cc_result_t) {           \
+                .filename = __FILE__,                    \
+                .function = (char*)__FUNCTION__,         \
+                .type = test_type_int,                \
+                .exp = (test_values_t) {.bool_val = true};     \
+                .act = (test_values_t) {.bool_val = (actual)}; \
+                .result = false,                         \
+                .line = __LINE__                         \
+            };                                           \
+            return ccrt;                                          \
+        }                                                         \
+    } while (0)
 
 /**
  * cc_setup is a function that needs to be implemented by the consumer of the 
