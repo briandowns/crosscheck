@@ -47,6 +47,7 @@ extern "C" {
 typedef enum {
     test_type_char,
     test_type_string,
+    test_type_bool,
     test_type_float,
     test_type_double,
     test_type_long,
@@ -83,6 +84,7 @@ typedef union {
     uint64_t uint64_val;
     char char_val;
     char *string_val;
+    bool bool_val;
 } test_values_t;
 
 /**
@@ -303,18 +305,51 @@ typedef cc_result_t (*cc_func_t)();
  * CC_ASSERT_STRING_NOT_EQUAL takes 2 strings and reports on their inequality. 
  */
 #define CC_ASSERT_STRING_NOT_EQUAL(actual, expected) \
-do {                                                 \
-    if (strcmp(actual, expected) == 0) {             \
-        cc_result_t ccrt = (cc_result_t) {           \
-            .filename = __FILE__,                    \
-            .function = (char*)__FUNCTION__,         \
-            .type = test_type_string,                \
-            .result = false,                         \
-            .line = __LINE__                         \
-        };                                           \
-        __CC_STRING_VAL_COPY(actual, expected);      \
-        return ccrt;                                 \
-    }                                                \
+    do {                                                 \
+        if (strcmp(actual, expected) == 0) {             \
+            cc_result_t ccrt = (cc_result_t) {           \
+                .filename = __FILE__,                    \
+                .function = (char*)__FUNCTION__,         \
+                .type = test_type_string,                \
+                .result = false,                         \
+                .line = __LINE__                         \
+            };                                           \
+            __CC_STRING_VAL_COPY(actual, expected);      \
+            return ccrt;                                 \
+        }                                                \
+    } while (0)
+
+
+#define __CC_ASSIGN_BOOL(actual)                     \
+    cc_result_t ccrt = (cc_result_t) {               \
+        .filename = __FILE__,                        \
+        .function = (char*)__FUNCTION__,             \
+        .type = test_type_bool,                      \
+        .act = (test_values_t) {.bool_val = actual}, \
+        .result = false,                             \
+        .line = __LINE__                             \
+    };
+
+/**
+ * CC_ASSERT_TRUE. 
+ */
+#define CC_ASSERT_TRUE(actual)                               \
+    do {                                                     \
+        if (actual == false) {                               \
+            __CC_ASSIGN_BOOL(actual);                        \
+            return ccrt;                                     \
+        }                                                    \
+    } while (0)
+
+/**
+ * CC_ASSERT_FALSE. 
+ */
+#define CC_ASSERT_FALSE(actual)                          \
+do {                                                     \
+    if (actual != false) {                               \
+        __CC_ASSIGN_BOOL(actual);                        \
+        return ccrt;                                     \
+    }                                                    \
 } while (0)
 
 /**
