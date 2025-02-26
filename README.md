@@ -36,6 +36,7 @@ The library is meant to be as simple as possible by providing obvious macros tha
 
 ### Equality
 
+* CC_ASSERT_TRUE
 * CC_ASSERT_CHAR_EQUAL
 * CC_ASSERT_FLOAT_EQUAL
 * CC_ASSERT_DOUBLE_EQUAL
@@ -55,6 +56,7 @@ The library is meant to be as simple as possible by providing obvious macros tha
 
 ### Inequality
 
+* CC_ASSERT_FALSE
 * CC_ASSERT_CHAR_NOT_EQUAL
 * CC_ASSERT_FLOAT_NOT_EQUAL
 * CC_ASSERT_DOUBLE_NOT_EQUAL

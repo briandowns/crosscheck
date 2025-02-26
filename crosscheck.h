@@ -47,6 +47,7 @@ extern "C" {
 typedef enum {
     test_type_char,
     test_type_string,
+    test_type_bool,
     test_type_float,
     test_type_double,
     test_type_long,
@@ -318,24 +319,38 @@ typedef cc_result_t (*cc_func_t)();
         }                                                \
     } while (0)
 
+
+#define __CC_ASSIGN_BOOL(actual)                     \
+    cc_result_t ccrt = (cc_result_t) {               \
+        .filename = __FILE__,                        \
+        .function = (char*)__FUNCTION__,             \
+        .type = test_type_bool,                      \
+        .act = (test_values_t) {.bool_val = actual}, \
+        .result = false,                             \
+        .line = __LINE__                             \
+    };
+
 /**
  * CC_ASSERT_TRUE. 
  */
-#define CC_ASSERT_TRUE(actual) \
-    do {                                                 \
-        if (actual == false) {             \
-            cc_result_t ccrt = (cc_result_t) {           \
-                .filename = __FILE__,                    \
-                .function = (char*)__FUNCTION__,         \
-                .type = test_type_int,                \
-                .exp = (test_values_t) {.bool_val = true};     \
-                .act = (test_values_t) {.bool_val = (actual)}; \
-                .result = false,                         \
-                .line = __LINE__                         \
-            };                                           \
-            return ccrt;                                          \
-        }                                                         \
+#define CC_ASSERT_TRUE(actual)                               \
+    do {                                                     \
+        if (actual == false) {                               \
+            __CC_ASSIGN_BOOL(actual);                        \
+            return ccrt;                                     \
+        }                                                    \
     } while (0)
+
+/**
+ * CC_ASSERT_FALSE. 
+ */
+#define CC_ASSERT_FALSE(actual)                          \
+do {                                                     \
+    if (actual != false) {                               \
+        __CC_ASSIGN_BOOL(actual);                        \
+        return ccrt;                                     \
+    }                                                    \
+} while (0)
 
 /**
  * cc_setup is a function that needs to be implemented by the consumer of the 
