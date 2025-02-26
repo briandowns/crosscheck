@@ -58,6 +58,7 @@ clean:
 	rm -f tests/tests
 	rm -f test
 
+# compiling with debug symbols for easier testing the example code.
 .PHONY: example
 example: clean
-	$(CC) -o $@ crosscheck.c example.c $(CFLAGS) $(LDFLAGS)
+	$(CC) -g -o $@ crosscheck.c example.c $(CFLAGS) $(LDFLAGS)
