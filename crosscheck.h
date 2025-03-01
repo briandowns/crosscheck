@@ -207,67 +207,67 @@ typedef cc_result_t (*cc_func_t)();
     } while (0)
 
 /* Type specific wrapper macros for equality */
-#define CC_ASSERT_CHAR_EQUAL(actual, expected)                            \
+#define CC_ASSERT_CHAR_EQUAL(actual, expected)                               \
     __CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_char)
-#define CC_ASSERT_FLOAT_EQUAL(actual, expected)                           \
+#define CC_ASSERT_FLOAT_EQUAL(actual, expected)                              \
     __CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_float)
-#define CC_ASSERT_DOUBLE_EQUAL(actual, expected)                          \
+#define CC_ASSERT_DOUBLE_EQUAL(actual, expected)                             \
     __CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_double)
-#define CC_ASSERT_LONG_EQUAL(actual, expected)                            \
+#define CC_ASSERT_LONG_EQUAL(actual, expected)                               \
     __CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_long)
-#define CC_ASSERT_LONG_LONG_EQUAL(actual, expected)                       \
+#define CC_ASSERT_LONG_LONG_EQUAL(actual, expected)                          \
     __CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_long_long)
-#define CC_ASSERT_INT_EQUAL(actual, expected)                             \
+#define CC_ASSERT_INT_EQUAL(actual, expected)                                \
     __CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_int)
-#define CC_ASSERT_INT8_EQUAL(actual, expected)                            \
+#define CC_ASSERT_INT8_EQUAL(actual, expected)                               \
     __CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_int8)
-#define CC_ASSERT_INT16_EQUAL(actual, expected)                           \
+#define CC_ASSERT_INT16_EQUAL(actual, expected)                              \
     __CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_int16)
-#define CC_ASSERT_INT32_EQUAL(actual, expected)                           \
+#define CC_ASSERT_INT32_EQUAL(actual, expected)                              \
     __CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_int32)
-#define CC_ASSERT_INT64_EQUAL(actual, expected)                           \
+#define CC_ASSERT_INT64_EQUAL(actual, expected)                              \
     __CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_int64)
-#define CC_ASSERT_UINT_EQUAL(actual, expected)                            \
+#define CC_ASSERT_UINT_EQUAL(actual, expected)                               \
     __CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_uint)
-#define CC_ASSERT_UINT8_EQUAL(actual, expected)                           \
+#define CC_ASSERT_UINT8_EQUAL(actual, expected)                              \
     __CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_uint8)
-#define CC_ASSERT_UINT16_EQUAL(actual, expected)                          \
+#define CC_ASSERT_UINT16_EQUAL(actual, expected)                             \
     __CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_uint16)
-#define CC_ASSERT_UINT32_EQUAL(actual, expected)                          \
+#define CC_ASSERT_UINT32_EQUAL(actual, expected)                             \
     __CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_uint32)
-#define CC_ASSERT_UINT64_EQUAL(actual, expected)                          \
+#define CC_ASSERT_UINT64_EQUAL(actual, expected)                             \
     __CC_ASSERT_NUMBER_EQUAL_TYPE((actual), (expected), test_type_uint64)
 
 /* Type specific wrapper macros for in-equality */
-#define CC_ASSERT_CHAR_NOT_EQUAL(actual, expected)                            \
+#define CC_ASSERT_CHAR_NOT_EQUAL(actual, expected)                               \
     __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_char)
-#define CC_ASSERT_FLOAT_NOT_EQUAL(actual, expected)                           \
+#define CC_ASSERT_FLOAT_NOT_EQUAL(actual, expected)                              \
     __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_float)
-#define CC_ASSERT_DOUBLE_NOT_EQUAL(actual, expected)                          \
+#define CC_ASSERT_DOUBLE_NOT_EQUAL(actual, expected)                             \
     __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_double)
-#define CC_ASSERT_LONG_NOT_EQUAL(actual, expected)                            \
+#define CC_ASSERT_LONG_NOT_EQUAL(actual, expected)                               \
     __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_long)
-#define CC_ASSERT_LONG_LONG_NOT_EQUAL(actual, expected)                       \
+#define CC_ASSERT_LONG_LONG_NOT_EQUAL(actual, expected)                          \
     __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_long_long)
-#define CC_ASSERT_INT_NOT_EQUAL(actual, expected)                             \
+#define CC_ASSERT_INT_NOT_EQUAL(actual, expected)                                \
     __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_int)
-#define CC_ASSERT_INT8_NOT_EQUAL(actual, expected)                            \
+#define CC_ASSERT_INT8_NOT_EQUAL(actual, expected)                               \
     __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_int8)
-#define CC_ASSERT_INT16_NOT_EQUAL(actual, expected)                           \
+#define CC_ASSERT_INT16_NOT_EQUAL(actual, expected)                              \
     __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_int16)
-#define CC_ASSERT_INT32_NOT_EQUAL(actual, expected)                           \
+#define CC_ASSERT_INT32_NOT_EQUAL(actual, expected)                              \
     __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_int32)
-#define CC_ASSERT_INT64_NOT_EQUAL(actual, expected)                           \
+#define CC_ASSERT_INT64_NOT_EQUAL(actual, expected)                              \
     __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_int64)
-#define CC_ASSERT_UINT_NOT_EQUAL(actual, expected)                            \
+#define CC_ASSERT_UINT_NOT_EQUAL(actual, expected)                               \
     __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_uint)
-#define CC_ASSERT_UINT8_NOT_EQUAL(actual, expected)                           \
+#define CC_ASSERT_UINT8_NOT_EQUAL(actual, expected)                              \
     __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_uint8)
-#define CC_ASSERT_UINT16_NOT_EQUAL(actual, expected)                          \
+#define CC_ASSERT_UINT16_NOT_EQUAL(actual, expected)                             \
     __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_uint16)
-#define CC_ASSERT_UINT32_NOT_EQUAL(actual, expected)                          \
+#define CC_ASSERT_UINT32_NOT_EQUAL(actual, expected)                             \
     __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_uint32)
-#define CC_ASSERT_UINT64_NOT_EQUAL(actual, expected)                          \
+#define CC_ASSERT_UINT64_NOT_EQUAL(actual, expected)                             \
     __CC_ASSERT_NUMBER_NOT_EQUAL_TYPE((actual), (expected), test_type_uint64)
 
 /**
@@ -305,18 +305,18 @@ typedef cc_result_t (*cc_func_t)();
  * CC_ASSERT_STRING_NOT_EQUAL takes 2 strings and reports on their inequality. 
  */
 #define CC_ASSERT_STRING_NOT_EQUAL(actual, expected) \
-    do {                                                 \
-        if (strcmp(actual, expected) == 0) {             \
-            cc_result_t ccrt = (cc_result_t) {           \
-                .filename = __FILE__,                    \
-                .function = (char*)__FUNCTION__,         \
-                .type = test_type_string,                \
-                .result = false,                         \
-                .line = __LINE__                         \
-            };                                           \
-            __CC_STRING_VAL_COPY(actual, expected);      \
-            return ccrt;                                 \
-        }                                                \
+    do {                                             \
+        if (strcmp(actual, expected) == 0) {         \
+            cc_result_t ccrt = (cc_result_t) {       \
+                .filename = __FILE__,                \
+                .function = (char*)__FUNCTION__,     \
+                .type = test_type_string,            \
+                .result = false,                     \
+                .line = __LINE__                     \
+            };                                       \
+            __CC_STRING_VAL_COPY(actual, expected);  \
+            return ccrt;                             \
+        }                                            \
     } while (0)
 
 
@@ -333,23 +333,23 @@ typedef cc_result_t (*cc_func_t)();
 /**
  * CC_ASSERT_TRUE. 
  */
-#define CC_ASSERT_TRUE(actual)                               \
-    do {                                                     \
-        if (actual == false) {                               \
-            __CC_ASSIGN_BOOL(actual);                        \
-            return ccrt;                                     \
-        }                                                    \
+#define CC_ASSERT_TRUE(actual)        \
+    do {                              \
+        if (actual == false) {        \
+            __CC_ASSIGN_BOOL(actual); \
+            return ccrt;              \
+        }                             \
     } while (0)
 
 /**
  * CC_ASSERT_FALSE. 
  */
-#define CC_ASSERT_FALSE(actual)                          \
-do {                                                     \
-    if (actual != false) {                               \
-        __CC_ASSIGN_BOOL(actual);                        \
-        return ccrt;                                     \
-    }                                                    \
+#define CC_ASSERT_FALSE(actual)   \
+do {                              \
+    if (actual != false) {        \
+        __CC_ASSIGN_BOOL(actual); \
+        return ccrt;              \
+    }                             \
 } while (0)
 
 /**
