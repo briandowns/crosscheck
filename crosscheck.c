@@ -44,13 +44,6 @@ static uint64_t failed = 0;
 static clock_t  start  = 0;
 static clock_t  end    = 0;
 
-#ifdef __APPLE__
-void
-cc_setup();
-void
-cc_tear_down();
-#endif
-
 void
 cc_init()
 {
