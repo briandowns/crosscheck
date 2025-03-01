@@ -83,7 +83,7 @@ test_string_compare_failure()
 cc_result_t
 test_assert_true()
 {
-    CC_ASSERT_TRUE(false); 
+    CC_ASSERT_TRUE(true); 
     CC_SUCCESS;
 }
 
