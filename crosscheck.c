@@ -62,6 +62,16 @@ cc_print_fail_info(const cc_result_t ret, const double time_spent)
 
     if (ret.type == test_type_char) {
         printf("        expected: %c, got: %c\n", ret.exp.char_val, ret.act.char_val);
+    } else if (ret.type == test_type_string) {
+        printf("        expected: %s, got: %s\n", ret.exp.string_val, ret.act.string_val);
+        free(ret.exp.string_val);
+        free(ret.act.string_val);
+    } else if (ret.type == test_type_bool) {
+        if (ret.act.bool_val == false) {
+            printf("        expected: true, got: false\n");
+        } else {
+            printf("        expected: false, got: true\n");
+        }
     } else if (ret.type == test_type_float) {
         printf("        expected: %f, got: %f\n", ret.exp.float_val, ret.act.float_val);
     } else if (ret.type == test_type_double) {
@@ -69,8 +79,7 @@ cc_print_fail_info(const cc_result_t ret, const double time_spent)
     } else if (ret.type == test_type_long) {
         printf("        expected: %ld, got: %ld\n", ret.exp.long_val, ret.act.long_val);
     } else if (ret.type == test_type_long_long) {
-        printf("        expected: %lld, got: %lld\n", ret.exp.long_long_val,
-            ret.act.long_long_val);
+        printf("        expected: %lld, got: %lld\n", ret.exp.long_long_val, ret.act.long_long_val);
     } else if (ret.type == test_type_int) {
         printf("        expected: %d, got: %d\n", ret.exp.int_val, ret.act.int_val);
     } else if (ret.type == test_type_int8) {
@@ -91,10 +100,6 @@ cc_print_fail_info(const cc_result_t ret, const double time_spent)
         printf("        expected: %d, got: %d\n", ret.exp.uint32_val, ret.act.uint32_val);
     } else if (ret.type == test_type_uint64) {
         printf("        expected: %ld, got: %ld\n", ret.exp.uint64_val, ret.act.uint64_val);
-    } else if (ret.type == test_type_string) {
-        printf("        expected: %s, got: %s\n", ret.exp.string_val, ret.act.string_val);
-        free(ret.exp.string_val);
-        free(ret.act.string_val);
     }
 }
 
