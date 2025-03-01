@@ -89,7 +89,7 @@ cc_print_fail_info(const cc_result_t ret, const double time_spent)
     } else if (ret.type == test_type_int32) {
         printf("        expected: %d, got: %d\n", ret.exp.int32_val, ret.act.int32_val);
     } else if (ret.type == test_type_int64) {
-        printf("        expected: %ld, got: %ld\n", ret.exp.int64_val, ret.act.int64_val);
+        printf("        expected: %lld, got: %lld\n", ret.exp.int64_val, ret.act.int64_val);
     } else if (ret.type == test_type_uint) {
         printf("        expected: %d, got: %d\n", ret.exp.uint_val, ret.act.uint_val);
     } else if (ret.type == test_type_uint8) {
@@ -99,7 +99,7 @@ cc_print_fail_info(const cc_result_t ret, const double time_spent)
     } else if (ret.type == test_type_uint32) {
         printf("        expected: %d, got: %d\n", ret.exp.uint32_val, ret.act.uint32_val);
     } else if (ret.type == test_type_uint64) {
-        printf("        expected: %ld, got: %ld\n", ret.exp.uint64_val, ret.act.uint64_val);
+        printf("        expected: %llu, got: %llu\n", ret.exp.uint64_val, ret.act.uint64_val);
     }
 }
 
