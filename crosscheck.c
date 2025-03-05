@@ -136,7 +136,6 @@ cc_run(cc_func_t func)
         failed++;
 
         cc_print_fail_info(ret, time_spent);
-
         cc_tear_down();
 
         return false;
