@@ -87,6 +87,20 @@ test_assert_true()
     CC_SUCCESS;
 }
 
+cc_result_t
+test_assert_null()
+{
+    CC_ASSERT_NULL(NULL); 
+    CC_SUCCESS;
+}
+
+cc_result_t
+test_assert_not_null()
+{
+    CC_ASSERT_NOT_NULL((void*)1); 
+    CC_SUCCESS;
+}
+
 int
 main(void)
 {
@@ -100,6 +114,8 @@ main(void)
     CC_RUN(test_string_compare_success);
     CC_RUN(test_string_compare_failure);
     CC_RUN(test_assert_true);
+    CC_RUN(test_assert_null);
+    CC_RUN(test_assert_not_null);
 
     CC_COMPLETE;
 }
