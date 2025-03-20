@@ -384,9 +384,9 @@
  bool
  cc_run(cc_func_t func);
  
- #define CC_INIT cc_init();
- #define CC_RUN(func) cc_run(func);
- #define CC_COMPLETE return cc_complete();
+ #define CC_INIT cc_init()
+ #define CC_RUN(func) cc_run(func)
+ #define CC_COMPLETE return cc_complete()
  
  #endif /* end __CC_H */
  #ifdef __cplusplus
