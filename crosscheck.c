@@ -52,12 +52,12 @@ cc_init()
 }
 
 /**
- * cc_print_fail_info prints relevant data for the failure condition.
- */
+* cc_print_fail_info prints relevant data for the failure condition.
+*/
 static void
 cc_print_fail_info(const cc_result_t ret, const double time_spent)
 {
-    printf("  %-28s%18s:%-12"PRIu64 RED "%-8s" RESET " %-2.3f/ms\n",
+    printf("  %-36s%18s:%-12"PRIu64 RED "%-8s" RESET " %-2.3f/ms\n",
         ret.function, ret.filename, ret.line, "failed", (time_spent*1000));
 
     if (ret.type == test_type_char) {
@@ -142,7 +142,7 @@ cc_run(cc_func_t func)
     }
     passed++;
     
-    printf("  %-28s%-28s" GREEN "%-8s" RESET "   %-2.3f/ms\n",
+    printf("  %-36s%-36s" GREEN "%-8s" RESET "   %-2.3f/ms\n",
         ret.function, "", "   passed", (time_spent*1000));
     cc_tear_down();
     
@@ -155,7 +155,7 @@ cc_complete()
     end = clock();
     double ts = (double)(end - start) / CLOCKS_PER_SEC; \
     printf("\nTotal: %-4"PRIu64 " Passed: %-4"PRIu64 " Failed: %-4"PRIu64 "in  %-2.3f/ms\n", \
-         count, passed, failed, (ts*1000));
+        count, passed, failed, (ts*1000));
 
     return failed;
 }
